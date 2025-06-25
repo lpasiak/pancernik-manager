@@ -1,0 +1,20 @@
+damage_types_long = {
+ 'USZ': r'''<p class="p-center p-big p-info">ℹ️ Produkt pochodzi z outletu!</p><p>Na aukcji kupujesz produkt, który <strong>nie kwalifikuje się do sprzedaży jako pełnowartościowy</strong> z powodu <strong>uszkodzonego lub rozpakowanego opakowania</strong>, dlatego oferujemy go w obniżonej cenie!</p><p>Każdy produkt jest sprawdzony i w pełni sprawny, posiada pełną gwarancję producenta oraz wsparcie techniczne sklepu.</p><p class="p-center">[SKU_OUTLET_CODE]</p><hr>''',
+
+ 'ZAR': r'''<p class="p-center p-big p-info">ℹ️ Produkt pochodzi z outletu!</p><p>Na aukcji kupujesz produkt, który <strong>nie kwalifikuje się do sprzedaży jako pełnowartościowy</strong> z powodu <strong>zarysowania lub zabrudzenia</strong> którego nie da się usunąć, dlatego oferujemy go w obniżonej cenie!</p><p>Każdy produkt jest sprawdzony i w pełni sprawny, posiada pełną gwarancję producenta oraz wsparcie techniczne sklepu. Wspomniane wady nie wpływają na użytkowanie przedmiotu.</p><p class="p-center">[SKU_OUTLET_CODE]</p><hr>''',
+
+ 'OBA': r'''<p class="p-center p-big p-info">ℹ️ Produkt pochodzi z outletu!</p><p>Na aukcji kupujesz produkt, który <strong>nie kwalifikuje się do sprzedaży jako pełnowartościowy</strong> z powodu <strong>zarysowania lub zabrudzenia</strong>, którego nie da się usunąć oraz <strong>uszkodzonego opakowania</strong>, dlatego oferujemy go w obniżonej cenie!</p><p>Każdy produkt jest sprawdzony i w pełni sprawny, posiada pełną gwarancję producenta oraz wsparcie techniczne sklepu. Wspomniane wady nie wpływają na użytkowanie przedmiotu.</p><p class="p-center">[SKU_OUTLET_CODE]</p><hr>'''
+}
+
+damage_types_short = {
+ 'USZ': r'''<div class="outp-table-wrap"><div class="outp-table-inner"><div class="outp-table-row"><div class="outp-table-td">Stan produktu:</div><div class="outp-table-td">Bardzo dobry</div></div><div class="outp-table-row"><div class="outp-table-td">Powód przeceny:</div><div class="outp-table-td">Defekt opakowania</div></div><div class="outp-table-row"><div class="outp-table-td">Dodatkowe informacje:</div><div class="outp-table-td">Wyposażenie kompletne, towar mógł być rozpakowany</div></div><div class="outp-table-row"><div class="outp-table-td">Stan opakowania:</div><div class="outp-table-td">Uszkodzone opakowanie fabryczne</div></div></div></div>''',
+
+ 'ZAR': r'''<div class="outp-table-wrap"><div class="outp-table-inner"><div class="outp-table-row"><div class="outp-table-td">Stan produktu:</div><div class="outp-table-td">Dobry</div></div><div class="outp-table-row"><div class="outp-table-td">Powód przeceny:</div><div class="outp-table-td">Zarysowanie lub zabrudzenie</div></div><div class="outp-table-row"><div class="outp-table-td">Dodatkowe informacje:</div><div class="outp-table-td">Wyposażenie kompletne, towar był rozpakowany</div></div><div class="outp-table-row"><div class="outp-table-td">Stan opakowania:</div><div class="outp-table-td">Nieuszkodzone</div></div></div></div>''',
+
+ 'OBA': r'''<div class="outp-table-wrap"><div class="outp-table-inner"><div class="outp-table-row"><div class="outp-table-td">Stan produktu:</div><div class="outp-table-td">Dobry</div></div><div class="outp-table-row"><div class="outp-table-td">Powód przeceny:</div><div class="outp-table-td">Defekt opakowania</div></div><div class="outp-table-row"><div class="outp-table-td"></div><div class="outp-table-td">Zarysowanie lub zabrudzenie</div></div><div class="outp-table-row"><div class="outp-table-td">Dodatkowe informacje:</div><div class="outp-table-td">Wyposażenie kompletne, towar był rozpakowany</div></div><div class="outp-table-row"><div class="outp-table-td">Stan opakowania:</div><div class="outp-table-td">Uszkodzone opakowanie fabryczne</div></div></div></div>'''
+}
+
+formulas_to_remove = {
+    'bewood': r'''<p class="p-center p-info">ℹ️ Ponieważ etui Bewood tworzone jest specjalnie na zamówienie, przy zakupie pokrowca termin realizacji całego zamówienia może wynosić do 3 dni.</p>''',
+    'grizz': r'''<p class="p-center p-info">ℹ️ Ponieważ folia Grizz wycinana jest specjalnie na zamówienie, przy zakupie folii termin realizacji całego zamówienia może wynosić do 3 dni.</p>'''
+}
