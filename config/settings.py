@@ -1,6 +1,6 @@
 from pathlib import Path
 from dotenv import load_dotenv
-import datetime
+from datetime import datetime
 import pandas as pd
 import os
 
