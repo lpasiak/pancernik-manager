@@ -2,22 +2,22 @@ import config
 from tqdm import tqdm
 
 
-class ShoperCategories:
+class ShoperGauges:
     def __init__(self, client):
         """Initialize a Shoper Client"""
         self.client = client
 
-    def get_all_categories(self):
-        """Get all categories from Shoper.
+    def get_all_gauges(self):
+        """Get all gauges from Shoper.
         Returns a Data dict if successful, Error dict if failed"""
-        categories = []
-        url = f'{self.client.site_url}/webapi/rest/categories'
+        gauges = []
+        url = f'{self.client.site_url}/webapi/rest/gauges'
         params = {
             'limit': config.SHOPER_LIMIT,
             'page': 1
         }
 
-        print("ℹ️  Downloading all categories...")
+        print("ℹ️  Downloading all gauges...")
         response = self.client._handle_request('GET', url, params=params)
 
         if response.status_code != 200:
@@ -26,7 +26,7 @@ class ShoperCategories:
 
         data = response.json()
         number_of_pages = data['pages']
-        categories.extend(data.get('list', []))
+        gauges.extend(data.get('list', []))
 
         for page in tqdm(range(2, number_of_pages + 1),
                          desc="Downloading pages", unit=" page"):
@@ -39,6 +39,6 @@ class ShoperCategories:
                 return {'success': False, 'error': error_description}
 
             page_data = response.json().get('list', [])
-            categories.extend(page_data)
+            gauges.extend(page_data)
 
-        return categories
+        return gauges

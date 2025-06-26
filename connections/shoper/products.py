@@ -17,6 +17,7 @@ class ShoperProducts:
         Returns:
             dict: Product data if successful, Error dict if failed
         """
+        url = f'{self.client.site_url}/webapi/rest/products'
         
         if use_code:
             # Get product by product code (SKU)
@@ -25,7 +26,7 @@ class ShoperProducts:
             }
             response = self.client._handle_request(
                 'GET',
-                f'{self.client.site_url}/webapi/rest/products',
+                url,
                 params=product_filter
             )
             product_list = response.json().get('list', [])
@@ -40,7 +41,7 @@ class ShoperProducts:
             # Get product by product ID
             response = self.client._handle_request(
                 'GET',
-                f'{self.client.site_url}/webapi/rest/products/{identifier}'
+                f'{url}/{identifier}'
             )
             product = response.json()
             
@@ -60,13 +61,12 @@ class ShoperProducts:
     def create_product(self, product_data):
         """Create a new product in Shoper
         Args:
-            product_data (dict): Product data | 
-            https://developers.shoper.pl/developers/api/resources/products/insert
+            product_data (dict): Product data
         Returns:
             int|dict: Product ID if successful, Error dict if failed
         """
         response = self.client._handle_request(
-            'POST', f'{self.client.site_url}/webapi/rest/products', 
+            'POST',
             json=product_data
         )
         
@@ -106,7 +106,6 @@ class ShoperProducts:
             identifier (int|str): Product id or product code
             use_code (bool): If True, use product code (SKU) instead of ID
             parameters key=value: Parameters to update
-            https://developers.shoper.pl/developers/api/resources/products/update
         Returns:
             True|dict: True if successful, Error dict if failed
         """

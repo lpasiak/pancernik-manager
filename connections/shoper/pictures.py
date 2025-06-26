@@ -34,7 +34,6 @@ class ShoperPictures:
         """Update product image
         Args:
             image_data (dict): Image data
-            https://developers.shoper.pl/developers/api/resources/product-images/insert
         Returns:
             dict: Image data if successful, Error dict if failed
         """
