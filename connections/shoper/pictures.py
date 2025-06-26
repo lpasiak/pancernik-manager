@@ -1,5 +1,4 @@
 import config, json
-from tqdm import tqdm
 
 
 class ShoperPictures:
@@ -19,10 +18,14 @@ class ShoperPictures:
             "limit": config.SHOPER_LIMIT
         }
 
-        response = self.client._handle_request('GET', f'{self.client.site_url}/webapi/rest/product-images', params=photo_filter)
+        response = self.client._handle_request(
+            'GET',
+            f'{self.client.site_url}/webapi/rest/product-images',
+            params=photo_filter
+            )
 
         if response.status_code != 200:
-            error_description = response.json()['error_description']
+            error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
         
         return response.json()['list']
@@ -31,13 +34,18 @@ class ShoperPictures:
         """Update product image
         Args:
             image_data (dict): Image data
+            https://developers.shoper.pl/developers/api/resources/product-images/insert
         Returns:
             dict: Image data if successful, Error dict if failed
         """
-        response = self.client._handle_request('POST', f'{self.client.site_url}/webapi/rest/product-images/', json=image_data)
+        response = self.client._handle_request(
+            'POST',
+            f'{self.client.site_url}/webapi/rest/product-images/',
+            json=image_data
+        )
         
         if response.status_code != 200:
-            error_description = response.json()['error_description']
+            error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
         
         return response.json()
@@ -56,11 +64,14 @@ class ShoperPictures:
             'url': new_url,
             'translations': {'pl_PL': {'name': photo_name}}
         }
-        response = self.client._handle_request('PUT', f'{self.client.site_url}/webapi/rest/product-images/{photo_id}', json=params)
+        response = self.client._handle_request(
+            'PUT',
+            f'{self.client.site_url}/webapi/rest/product-images/{photo_id}',
+            json=params
+        )
         
         if response.status_code != 200:
-            error_description = response.json()['error_description']
+            error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
         
         return True
-       

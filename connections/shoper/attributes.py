@@ -9,7 +9,8 @@ class ShoperAttributes:
         self.client = client
 
     def get_all_attribute_groups(self):
-        """Get all attribute groups from Shoper. Returns a JSON if successful, Error dict if failed"""
+        """Get all attribute groups from Shoper. 
+        Returns a JSON if successful, Error dict if failed"""
         attribute_groups = []
         url = f'{self.client.site_url}/webapi/rest/attribute-groups'
         params = {
@@ -19,6 +20,7 @@ class ShoperAttributes:
 
         print("ℹ️  Downloading all attribute groups...")
         response = self.client._handle_request('GET', url, params=params)
+
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
@@ -27,7 +29,9 @@ class ShoperAttributes:
         number_of_pages = data.get('pages', 1)
         attribute_groups.extend(data.get('list', []))
 
-        for page in tqdm(range(2, number_of_pages + 1), desc="Downloading attribute groups", unit=" page"):
+        for page in tqdm(range(2, number_of_pages + 1), 
+                         desc="Downloading attribute groups", unit=" page"):
+            
             params['page'] = page
             response = self.client._handle_request('GET', url, params=params)
 
@@ -41,7 +45,8 @@ class ShoperAttributes:
         return attribute_groups
 
     def get_all_attributes(self):
-        """Get all attributes from Shoper. Returns a JSON if successful, Error dict if failed"""
+        """Get all attributes from Shoper. 
+        Returns a JSON if successful, Error dict if failed"""
         attributes = []
         url = f'{self.client.site_url}/webapi/rest/attributes'
         params = {
@@ -51,6 +56,7 @@ class ShoperAttributes:
 
         print("ℹ️  Downloading all attributes...")
         response = self.client._handle_request('GET', url, params=params)
+
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
@@ -59,9 +65,12 @@ class ShoperAttributes:
         number_of_pages = data.get('pages', 1)
         attributes.extend(data.get('list', []))
 
-        for page in tqdm(range(2, number_of_pages + 1), desc="Downloading pages"):
+        for page in tqdm(range(2, number_of_pages + 1),
+                         desc="Downloading pages", unit=" page"):
+            
             params['page'] = page
             response = self.client._handle_request('GET', url, params=params)
+
             if response.status_code != 200:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
@@ -82,7 +91,7 @@ class ShoperAttributes:
         response = self.client._handle_request('GET', url)
         
         if response.status_code != 200:
-            error_description = response.json()['error_description']
+            error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
         
         return response.json()
@@ -99,7 +108,7 @@ class ShoperAttributes:
         response = self.client._handle_request('PUT', url, json={'categories': categories})
         
         if response.status_code != 200:
-            error_description = response.json()['error_description']
+            error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
         
         return True
