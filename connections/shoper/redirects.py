@@ -53,7 +53,7 @@ class ShoperRedirects:
         return redirects
         
     def create_redirect(self, redirect_data):
-        """Create a redirect in Shoper
+        """Create a redirect in Shoper.
         Args:
             redirect_data (dict): Data about the redirect:
                 redirected_url: string
@@ -80,7 +80,7 @@ class ShoperRedirects:
         return response.json()
 
     def remove_redirect(self, identifier):
-        """Remove a redirect
+        """Remove a redirect in Shoper.
         Args:
             identifier (int): Redirect id
         Returns:
