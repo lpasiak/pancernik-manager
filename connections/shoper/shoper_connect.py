@@ -35,4 +35,7 @@ class ShoperAPIClient:
         
         self.token = response.json().get('access_token')
         self.session.headers.update({'Authorization': f'Bearer {self.token}'})
-        return {'success': True}
+        
+    @property
+    def is_connected(self):
+        return self.token is not None
