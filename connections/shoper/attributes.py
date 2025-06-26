@@ -4,21 +4,29 @@ from tqdm import tqdm
 
 class ShoperAttributes:
     def __init__(self, client):
-        """Initialize a Shoper Client"""
+        """Initialize a Shoper Client
+        https://developers.shoper.pl/developers/api/resources/attribute-groups
+        https://developers.shoper.pl/developers/api/resources/attributes
+        """
         self.client = client
+        self.url_attribute_groups = f'{self.client.site_url}/webapi/rest/attribute-groups'
+        self.url_attributes = f'{self.client.site_url}/webapi/rest/attributes'
 
     def get_all_attribute_groups(self):
         """Get all attribute groups from Shoper. 
         Returns a Data dict if successful, Error dict if failed"""
         attribute_groups = []
-        url = f'{self.client.site_url}/webapi/rest/attribute-groups'
         params = {
             'limit': config.SHOPER_LIMIT,
             'page': 1
         }
 
         print("ℹ️  Downloading all attribute groups...")
-        response = self.client._handle_request('GET', url, params=params)
+        response = self.client._handle_request(
+            'GET',
+            self.url_attribute_groups,
+            params=params
+        )
 
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
@@ -32,7 +40,11 @@ class ShoperAttributes:
                          desc="Downloading attribute groups", unit=" page"):
             
             params['page'] = page
-            response = self.client._handle_request('GET', url, params=params)
+            response = self.client._handle_request(
+                'GET',
+                self.url_attribute_groups,
+                params=params
+            )
 
             if response.status_code != 200:
                 error_description = response.json().get('error_description', 'Unknown error')
@@ -47,14 +59,17 @@ class ShoperAttributes:
         """Get all attributes from Shoper. 
         Returns a Data dict if successful, Error dict if failed"""
         attributes = []
-        url = f'{self.client.site_url}/webapi/rest/attributes'
         params = {
             'limit': config.SHOPER_LIMIT,
             'page': 1
         }
 
         print("ℹ️  Downloading all attributes...")
-        response = self.client._handle_request('GET', url, params=params)
+        response = self.client._handle_request(
+            'GET',
+            self.url_attributes,
+            params=params
+        )
 
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
@@ -68,7 +83,11 @@ class ShoperAttributes:
                          desc="Downloading pages", unit=" page"):
             
             params['page'] = page
-            response = self.client._handle_request('GET', url, params=params)
+            response = self.client._handle_request(
+                'GET',
+                self.url_attributes,
+                params=params
+            )
 
             if response.status_code != 200:
                 error_description = response.json().get('error_description', 'Unknown error')
@@ -86,8 +105,10 @@ class ShoperAttributes:
         Returns:
             dict: The attribute group data
         """
-        url = f'{self.client.site_url}/webapi/rest/attribute-groups/{attribute_group_id}'
-        response = self.client._handle_request('GET', url)
+        response = self.client._handle_request(
+            'GET',
+            f'{self.get_all_attribute_groups}/{attribute_group_id}'
+        )
         
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
@@ -103,8 +124,11 @@ class ShoperAttributes:
         Returns:
             Error dict if failed, True if succesful
         """
-        url = f'{self.client.site_url}/webapi/rest/attribute-groups/{attribute_group_id}'
-        response = self.client._handle_request('PUT', url, json={'categories': categories})
+        response = self.client._handle_request(
+            'PUT',
+            f'{self.url_attribute_groups}/{attribute_group_id}',
+            json={'categories': categories}
+        )
         
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')

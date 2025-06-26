@@ -6,6 +6,7 @@ class ShoperGauges:
     def __init__(self, client):
         """Initialize a Shoper Client"""
         self.client = client
+        self.url = f'{self.client.site_url}/webapi/rest/gauges'
 
     def get_all_gauges(self):
         """Get all gauges from Shoper.
@@ -18,7 +19,11 @@ class ShoperGauges:
         }
 
         print("ℹ️  Downloading all gauges...")
-        response = self.client._handle_request('GET', url, params=params)
+        response = self.client._handle_request(
+            'GET',
+            self.url,
+            params=params
+        )
 
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
@@ -32,7 +37,11 @@ class ShoperGauges:
                          desc="Downloading pages", unit=" page"):
             
             params['page'] = page
-            response = self.client._handle_request('GET', url, params=params)
+            response = self.client._handle_request(
+                'GET', 
+                self.url, 
+                params=params
+            )
 
             if response.status_code != 200:
                 error_description = response.json().get('error_description', 'Unknown error')

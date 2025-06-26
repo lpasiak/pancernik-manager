@@ -3,8 +3,11 @@ import config, json
 
 class ShoperPictures:
     def __init__(self, client):
-        """Initialize a Shoper Client"""
+        """Initialize a Shoper Client
+        https://developers.shoper.pl/developers/api/resources/product-images
+        """
         self.client = client
+        self.url = f'{self.client.site_url}/webapi/rest/product-images'
 
     def get_product_pictures(self, product_id):
         """Get product images from Shoper
@@ -20,7 +23,7 @@ class ShoperPictures:
 
         response = self.client._handle_request(
             'GET',
-            f'{self.client.site_url}/webapi/rest/product-images',
+            self.url,
             params=photo_filter
             )
 
@@ -39,7 +42,7 @@ class ShoperPictures:
         """
         response = self.client._handle_request(
             'POST',
-            f'{self.client.site_url}/webapi/rest/product-images/',
+            self.url,
             json=image_data
         )
         
@@ -65,7 +68,7 @@ class ShoperPictures:
         }
         response = self.client._handle_request(
             'PUT',
-            f'{self.client.site_url}/webapi/rest/product-images/{photo_id}',
+            f'{self.url}/{photo_id}',
             json=params
         )
         

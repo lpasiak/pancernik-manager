@@ -4,21 +4,27 @@ from tqdm import tqdm
 
 class ShoperCategories:
     def __init__(self, client):
-        """Initialize a Shoper Client"""
+        """Initialize a Shoper Client
+        https://developers.shoper.pl/developers/api/resources/categories
+        """
         self.client = client
+        self.url = f'{self.client.site_url}/webapi/rest/categories'
 
     def get_all_categories(self):
         """Get all categories from Shoper.
         Returns a Data dict if successful, Error dict if failed"""
         categories = []
-        url = f'{self.client.site_url}/webapi/rest/categories'
         params = {
             'limit': config.SHOPER_LIMIT,
             'page': 1
         }
 
         print("ℹ️  Downloading all categories...")
-        response = self.client._handle_request('GET', url, params=params)
+        response = self.client._handle_request(
+            'GET',
+            self.url,
+            params=params
+        )
 
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
@@ -32,7 +38,11 @@ class ShoperCategories:
                          desc="Downloading pages", unit=" page"):
             
             params['page'] = page
-            response = self.client._handle_request('GET', url, params=params)
+            response = self.client._handle_request(
+                'GET',
+                self.url,
+                params=params
+            )
 
             if response.status_code != 200:
                 error_description = response.json().get('error_description', 'Unknown error')

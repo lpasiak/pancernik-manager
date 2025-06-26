@@ -8,6 +8,7 @@ class ShoperProducts:
         """Initialize a Shoper Client"""
         self.client = client
         self.pictures = ShoperPictures(client)
+        self.url = f'{self.client.site_url}/webapi/rest/products'
 
     def get_product_by_code(self, identifier, pictures=False, use_code=False):
         """Get a product from Shoper by either product ID or product code.
@@ -17,7 +18,6 @@ class ShoperProducts:
         Returns:
             dict: Product data if successful, Error dict if failed
         """
-        url = f'{self.client.site_url}/webapi/rest/products'
         
         if use_code:
             # Get product by product code (SKU)
@@ -26,7 +26,7 @@ class ShoperProducts:
             }
             response = self.client._handle_request(
                 'GET',
-                url,
+                self.url,
                 params=product_filter
             )
             product_list = response.json().get('list', [])
@@ -41,7 +41,7 @@ class ShoperProducts:
             # Get product by product ID
             response = self.client._handle_request(
                 'GET',
-                f'{url}/{identifier}'
+                f'{self.url}/{identifier}'
             )
             product = response.json()
             
@@ -67,6 +67,7 @@ class ShoperProducts:
         """
         response = self.client._handle_request(
             'POST',
+            self.url,
             json=product_data
         )
         
@@ -91,7 +92,7 @@ class ShoperProducts:
         """
         response = self.client._handle_request(
             'DELETE',
-            f'{self.client.site_url}/webapi/rest/products/{product_id}'
+            f'{self.url}/{product_id}'
         )
         
         if response.status_code != 200:
@@ -123,7 +124,7 @@ class ShoperProducts:
                 params[key] = value
         response = self.client._handle_request(
             'PUT',
-            f'{self.client.site_url}/webapi/rest/products/{product_id}',
+            f'{self.url}/{product_id}',
             json=params
         )
 
@@ -137,14 +138,17 @@ class ShoperProducts:
         """Get all products from Shoper.
         Returns a Data dict if successful, Error dict if failed"""
         products = []
-        url = f'{self.client.site_url}/webapi/rest/products'
         params = {
             'limit': config.SHOPER_LIMIT,
             'page': 1
         }
 
         print("ℹ️  Downloading all products...")
-        response = self.client._handle_request('GET', url, params=params)
+        response = self.client._handle_request(
+            'GET',
+            self.url,
+            params=params
+        )
 
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
@@ -158,7 +162,11 @@ class ShoperProducts:
                          desc="Downloading pages", unit=" page"):
             
             params['page'] = page
-            response = self.client._handle_request('GET', url, params=params)
+            response = self.client._handle_request(
+                'GET',
+                self.url,
+                params=params
+            )
 
             if response.status_code != 200:
                 error_description = response.json().get('error_description', 'Unknown error')
