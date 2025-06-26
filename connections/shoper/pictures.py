@@ -62,5 +62,5 @@ class ShoperPictures:
             error_description = response.json()['error_description']
             return {'success': False, 'error': error_description}
         
-        return response.json()
+        return True
        
