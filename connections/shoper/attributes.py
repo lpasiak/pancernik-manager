@@ -14,7 +14,7 @@ class ShoperAttributes:
 
     def get_all_attribute_groups(self):
         """Get all attribute groups from Shoper. 
-        Returns a Data dict if successful, Error dict if failed"""
+        Returns a Data list if successful, Error dict if failed"""
         attribute_groups = []
         params = {
             'limit': config.SHOPER_LIMIT,
@@ -50,14 +50,13 @@ class ShoperAttributes:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
 
-            page_data = response.json().get('list', [])
-            attribute_groups.extend(page_data)
+            attribute_groups.extend(response.json().get('list', []))
 
         return attribute_groups
 
     def get_all_attributes(self):
         """Get all attributes from Shoper. 
-        Returns a Data dict if successful, Error dict if failed"""
+        Returns a Data list if successful, Error dict if failed"""
         attributes = []
         params = {
             'limit': config.SHOPER_LIMIT,
@@ -93,8 +92,7 @@ class ShoperAttributes:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
 
-            page_data = response.json().get('list', [])
-            attributes.extend(page_data)
+            attributes.extend(response.json().get('list', []))
 
         return attributes
 

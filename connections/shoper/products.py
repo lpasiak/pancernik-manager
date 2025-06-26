@@ -5,7 +5,9 @@ from tqdm import tqdm
 
 class ShoperProducts:
     def __init__(self, client):
-        """Initialize a Shoper Client"""
+        """Initialize a Shoper Client
+        https://developers.shoper.pl/developers/api/resources/products
+        """
         self.client = client
         self.pictures = ShoperPictures(client)
         self.url = f'{self.client.site_url}/webapi/rest/products'
@@ -53,7 +55,7 @@ class ShoperProducts:
         if pictures:
             try:
                 product['img'] = self.pictures.get_product_pictures(product['product_id'])
-            except Exception as e:
+            except Exception:
                 product['img'] = []
 
         return product
@@ -136,7 +138,7 @@ class ShoperProducts:
 
     def get_all_products(self):
         """Get all products from Shoper.
-        Returns a Data dict if successful, Error dict if failed"""
+        Returns a Data list if successful, Error dict if failed"""
         products = []
         params = {
             'limit': config.SHOPER_LIMIT,
@@ -172,7 +174,6 @@ class ShoperProducts:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
 
-            page_data = response.json().get('list', [])
-            products.extend(page_data)
+            products.extend(response.json().get('list', []))
 
         return products

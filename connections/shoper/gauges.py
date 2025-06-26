@@ -10,9 +10,8 @@ class ShoperGauges:
 
     def get_all_gauges(self):
         """Get all gauges from Shoper.
-        Returns a Data dict if successful, Error dict if failed"""
+        Returns a Data list if successful, Error dict if failed"""
         gauges = []
-        url = f'{self.client.site_url}/webapi/rest/gauges'
         params = {
             'limit': config.SHOPER_LIMIT,
             'page': 1
@@ -47,7 +46,6 @@ class ShoperGauges:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
 
-            page_data = response.json().get('list', [])
-            gauges.extend(page_data)
+            gauges.extend(response.json().get('list', []))
 
         return gauges

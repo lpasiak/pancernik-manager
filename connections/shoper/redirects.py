@@ -12,7 +12,7 @@ class ShoperRedirects:
 
     def get_all_redirects(self):
         """Get all redirects from Shoper.
-        Returns a Data dict if successful, Error dict if failed"""
+        Returns a Data list if successful, Error dict if failed"""
         redirects = []
         params = {
             'limit': config.SHOPER_LIMIT,
@@ -48,8 +48,7 @@ class ShoperRedirects:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
 
-            page_data = response.json().get('list', [])
-            redirects.extend(page_data)
+            redirects.extend(response.json().get('list', []))
 
         return redirects
         

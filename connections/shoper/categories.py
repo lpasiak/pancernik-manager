@@ -12,7 +12,7 @@ class ShoperCategories:
 
     def get_all_categories(self):
         """Get all categories from Shoper.
-        Returns a Data dict if successful, Error dict if failed"""
+        Returns a Data list if successful, Error dict if failed"""
         categories = []
         params = {
             'limit': config.SHOPER_LIMIT,
@@ -48,7 +48,6 @@ class ShoperCategories:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
 
-            page_data = response.json().get('list', [])
-            categories.extend(page_data)
+            categories.extend(response.json().get('list', []))
 
         return categories

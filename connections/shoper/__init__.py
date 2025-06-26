@@ -5,3 +5,5 @@ from .pictures import ShoperPictures
 from .categories import ShoperCategories
 from .gauges import ShoperGauges
 from .redirects import ShoperRedirects
+from .orders_products import ShoperProductOrders
+from .specialoffers import ShoperSpecialOffers
