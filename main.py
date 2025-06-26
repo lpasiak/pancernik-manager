@@ -1,14 +1,12 @@
-from connections.shoper import ShoperAPIClient, ShoperAttributes, ShoperPictures
+from connections.gsheets import GSheetsClient, GsheetsWorksheets
 from pprint import pprint
-import json
 
-client = ShoperAPIClient()
+client = GSheetsClient('14KXydCTaBwpB4un6iEQSj9XTzKOQ0nLfHe_yxmPd43sxdd')
 client.connect()
 
-attributes = ShoperAttributes(client)
-pictures = ShoperPictures(client)
-
-x = pictures.get_product_pictures("XD")
+test_worksheet = GsheetsWorksheets(
+    client,
+    sheet_name='test'
+)
+x = test_worksheet.get_data()
 print(x)
-
-

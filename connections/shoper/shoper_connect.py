@@ -34,5 +34,3 @@ class ShoperAPIClient:
             self.session.headers.update({'Authorization': f'Bearer {self.token}'})
         else:
             raise Exception(f"❌ Authentication failed: {response.status_code}, {response.text}")
-
-
