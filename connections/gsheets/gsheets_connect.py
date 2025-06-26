@@ -53,7 +53,10 @@ class GSheetsClient:
         """Authenticate with Google Sheets."""
         try:
             self.gc = gspread.service_account(filename=self.credentials_path)
-            self.sheet = self.gc.open_by_key(self.sheet_id)
-            return 
+            self.sheet = self.gc.open_by_key(self.sheet_id) 
         except Exception as e:
             print(f"❌ Error connecting to Google Sheets: {e}")
+
+    @property
+    def is_connected(self):
+        return self.sheet is not None
