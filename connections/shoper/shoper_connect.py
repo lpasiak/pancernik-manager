@@ -3,7 +3,6 @@ import config
 
 
 class ShoperAPIClient:
-
     def __init__(self):
         self.site_url = config.SHOPER_SITE_URL
         self.login = config.SHOPER_LOGIN

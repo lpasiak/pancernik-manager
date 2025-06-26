@@ -136,7 +136,7 @@ class ShoperProducts:
 
     def get_all_products(self):
         """Get all products from Shoper.
-        Returns a JSON if successful, Error dict if failed"""
+        Returns a Data dict if successful, Error dict if failed"""
         products = []
         url = f'{self.client.site_url}/webapi/rest/products'
         params = {
@@ -165,8 +165,6 @@ class ShoperProducts:
                 error_description = response.json().get('error_description', 'Unknown error')
                 return {'success': False, 'error': error_description}
 
-            if page == 3:
-                break
             page_data = response.json().get('list', [])
             products.extend(page_data)
 

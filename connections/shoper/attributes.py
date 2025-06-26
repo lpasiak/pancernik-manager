@@ -3,14 +3,13 @@ from tqdm import tqdm
 
 
 class ShoperAttributes:
-
     def __init__(self, client):
         """Initialize a Shoper Client"""
         self.client = client
 
     def get_all_attribute_groups(self):
         """Get all attribute groups from Shoper. 
-        Returns a JSON if successful, Error dict if failed"""
+        Returns a Data dict if successful, Error dict if failed"""
         attribute_groups = []
         url = f'{self.client.site_url}/webapi/rest/attribute-groups'
         params = {
@@ -46,7 +45,7 @@ class ShoperAttributes:
 
     def get_all_attributes(self):
         """Get all attributes from Shoper. 
-        Returns a JSON if successful, Error dict if failed"""
+        Returns a Data dict if successful, Error dict if failed"""
         attributes = []
         url = f'{self.client.site_url}/webapi/rest/attributes'
         params = {
