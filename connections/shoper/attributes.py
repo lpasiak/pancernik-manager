@@ -120,7 +120,7 @@ class ShoperAttributes:
             attribute_group_id (int): The ID of the attribute group to create
             categories (list): Product categories list as integers
         Returns:
-            Error dict if failed, True if succesful
+            Error dict if failed, Category count if successful
         """
         response = self.client._handle_request(
             'PUT',
@@ -132,4 +132,4 @@ class ShoperAttributes:
             error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
         
-        return True
+        return len(categories)
