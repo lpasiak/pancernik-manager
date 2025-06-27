@@ -1,4 +1,4 @@
-from .shoper_connect import ShoperAPIClient
+from .client import ShoperAPIClient
 from .products import ShoperProducts
 from .attributes import ShoperAttributes
 from .pictures import ShoperPictures

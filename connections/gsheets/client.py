@@ -7,11 +7,12 @@ class GSheetsClient:
 
     def __init__(self, sheet_id):
         """
-        Initialize the GSheetsClient with credentials and sheet ID.
+        Initialize the GSheetsClient with credentials and sheet ID and open the Spreadsheet.
         Args:
             credentials (str): Path to the service account JSON credentials file.
             sheet_id (str): Name of the environment variable storing the sheet ID.
             sheet_name (str): Name of the specific sheet.
+        https://docs.gspread.org/en/latest/
         """
 
         self.credentials_path = config.GOOGLE_CREDENTIALS_FILE
@@ -34,16 +35,20 @@ class GSheetsClient:
         base_delay = 20  # Start with 20 seconds delay
 
         while retry_count < max_retries:
+
             try:
                 return func(*args, **kwargs)
+            
             except gspread.exceptions.APIError as e:
                 retry_count += 1
+
                 if "RESOURCE_EXHAUSTED" in str(e) or "429" in str(e):
                     delay = base_delay * (2 ** (retry_count - 1))  # Exponential backoff
-                    print(f"API quota exceeded. Waiting {delay} seconds before retry {retry_count}/{max_retries}...")
+                    # print(f"API quota exceeded. Waiting {delay} seconds before retry {retry_count}/{max_retries}...")
                     time.sleep(delay)
                 else:
                     raise  # Re-raise if it's a different API error
+                
             except Exception as e:
                 raise  # Re-raise any other exceptions
 
