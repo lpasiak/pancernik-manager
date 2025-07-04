@@ -77,3 +77,22 @@ class ShoperPictures:
             return {'success': False, 'error': error_description}
         
         return True
+
+    def remove_product_image(self, photo_id):
+        """Removes a photo
+        Args:
+            photo_id (int): Photo id
+        Returns:
+            True|dict: True if successful, Error dict if failed
+        """
+
+        response = self.client._handle_request(
+            'DELETE',
+            f'{self.url}/{photo_id}'
+        )
+        
+        if response.status_code != 200:
+            error_description = response.json().get('error_description', 'Unknown error')
+            return {'success': False, 'error': error_description}
+        
+        return True
