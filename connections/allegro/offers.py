@@ -80,8 +80,7 @@ class AllegroOffers:
 
             return {'success': False, 'error': error_message}
         
-        data = response.json()
-        total_products = data.get('totalCount', 0)
+        total_products = response_json.get('totalCount', 0)
 
         for offset in tqdm(range(0, total_products, 100),
                         desc="Downloading offers", unit=" product"):

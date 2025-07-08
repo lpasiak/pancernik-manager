@@ -12,7 +12,7 @@ MANAGERS_DIR = ROOT_DIR / 'managers'
 EXPORTS_DIR = ROOT_DIR / 'exports'
 LOGGING_DIR = ROOT_DIR / 'logging'
 
-# DRIVE_EXPORT_DIR = r'H:\Pansernik\Eksporty' if os.path.exists('H:') else None
+# DRIVE_EXPORT_DIR = r'W:\Pansernik\Eksporty' if os.path.exists('H:') else None
 
 # Load environment variables from the .env file
 load_dotenv(ENVDIR)
