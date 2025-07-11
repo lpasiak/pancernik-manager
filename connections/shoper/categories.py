@@ -1,5 +1,6 @@
 import config
 from tqdm import tqdm
+from utils.helpers.helper_functions import export_to_json
 
 
 class ShoperCategories:
@@ -10,9 +11,13 @@ class ShoperCategories:
         self.client = client
         self.url = f'{self.client.site_url}/webapi/rest/categories'
 
-    def get_all_categories(self):
+    def get_all_categories(self, export: bool = True) -> list[dict]:
         """Get all categories from Shoper.
-        Returns a Data list if successful, Error dict if failed"""
+        Args:
+            export (bool): If True, export the categories to a JSON file.
+        Returns:
+            list: List of categories if successful.
+        """
         categories = []
         params = {
             'limit': config.SHOPER_LIMIT,
@@ -20,17 +25,7 @@ class ShoperCategories:
         }
 
         print("ℹ️  Downloading all categories...")
-        response = self.client._handle_request(
-            'GET',
-            self.url,
-            params=params
-        )
-
-        if response.status_code != 200:
-            error_description = response.json().get('error_description', 'Unknown error')
-            return {'success': False, 'error': error_description}
-
-        data = response.json()
+        data = self.client._handle_request('GET', self.url, params=params).json()
         number_of_pages = data['pages']
         categories.extend(data.get('list', []))
 
@@ -38,16 +33,10 @@ class ShoperCategories:
                          desc="Downloading pages", unit=" page"):
             
             params['page'] = page
-            response = self.client._handle_request(
-                'GET',
-                self.url,
-                params=params
-            )
+            data = self.client._handle_request('GET', self.url, params=params).json()
+            categories.extend(data.get('list', []))
 
-            if response.status_code != 200:
-                error_description = response.json().get('error_description', 'Unknown error')
-                return {'success': False, 'error': error_description}
-
-            categories.extend(response.json().get('list', []))
+        if export:
+            export_to_json(categories, 'shoper/shoper_categories.json')
 
         return categories

@@ -18,7 +18,7 @@ LOGGING_DIR = ROOT_DIR / 'logging'
 load_dotenv(ENVDIR)
 
 # API Connections, E-commerce platforms, marketplaces, etc.
-SHOPER_SITE = 'MAIN' # TEST (development) or MAIN (deployment)
+SHOPER_SITE = 'TEST' # TEST (development) or MAIN (deployment)
 SHOPER_SITE_URL = os.getenv(f'SHOPER_SITE_URL_{SHOPER_SITE}')
 SHOPER_LOGIN = os.getenv(f'SHOPER_LOGIN_{SHOPER_SITE}')
 SHOPER_PASSWORD = os.getenv(f'SHOPER_PASSWORD_{SHOPER_SITE}')

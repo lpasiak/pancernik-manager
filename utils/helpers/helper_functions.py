@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 import config
+from pathlib import Path
 
 # Pandas Selection and Filtering
 
@@ -28,5 +29,8 @@ def export_to_json(data: dict | list, filename: str) -> None:
     Returns:
         None
     """
-    with open(config.EXPORTS_DIR / filename, 'w', encoding='utf-8') as file:
+    filepath = config.EXPORTS_DIR / Path(filename)
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(filepath, 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4, ensure_ascii=False)

@@ -43,7 +43,7 @@ class ShoperSpecialOffers:
         
         return response.json()
 
-    def get_all_special_offers(self, export: bool = True) -> list:
+    def get_all_special_offers(self, export: bool = True) -> list[dict]:
         """Get all special offers from Shoper.
         Args:
             export (bool): If True, export the special offers to a JSON file.
@@ -69,7 +69,7 @@ class ShoperSpecialOffers:
             special_offers.extend(data.get('list', []))
 
         if export:
-            export_to_json(special_offers, 'shoper_special_offers.json')
+            export_to_json(special_offers, 'shoper/shoper_special_offers.json')
 
         return special_offers
     
@@ -80,14 +80,9 @@ class ShoperSpecialOffers:
             use_code (bool): Use product code (SKU) instead of product ID.
         Returns:
             True: True if successful.
-        Raises:
-            ValueError: If no special offer is found for the product.
         """
         product = self.products.get_product_by_code(identifier, use_code=use_code)
         promo_id = product.get('special_offer', {}).get('promo_id')
-
-        if not promo_id:
-            raise ValueError(f"No special offer found for product: {identifier}")
         
         self.client._handle_request('DELETE', f'{self.url}/{promo_id}')
         return True

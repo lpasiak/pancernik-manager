@@ -41,11 +41,11 @@ class ShoperMetafields:
         ).json()
         
         if export:
-            export_to_json(data, f'shoper_metafields-{identifier}.json')
+            export_to_json(data, f'shoper/shoper_metafields-{identifier}.json')
 
         return data
     
-    def get_all_metafields(self, object_type: str = 'product', export: bool = True) -> list:
+    def get_all_metafields(self, object_type: str = 'product', export: bool = True) -> list[dict]:
         """Get all metafields.
         Args:
             object_type (str): Type of object to get metafields for. Default is 'product'.
@@ -75,6 +75,6 @@ class ShoperMetafields:
             metafields.extend(data.get('list', []))
 
         if export:
-            export_to_json(data, f'shoper_metafields_{object_type}.json')
+            export_to_json(data, f'shoper/shoper_metafields_{object_type}.json')
 
         return metafields
