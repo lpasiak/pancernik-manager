@@ -1,5 +1,6 @@
 import requests, time
 import config
+from .exceptions import ShoperAPIError
 
 
 class ShoperAPIClient:
@@ -31,6 +32,9 @@ class ShoperAPIClient:
                 attempt += 1
                 continue
 
+            if response.status_code != 200:
+                raise ShoperAPIError(response)
+            
             return response
             
     def connect(self):
