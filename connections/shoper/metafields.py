@@ -28,10 +28,10 @@ class ShoperMetafields:
 
         return identifier
     
-    def get_metafield_by_id(self, identifier: str, object_type: str = 'product', export: bool = True) -> dict:
+    def get_metafield_by_id(self, identifier: str | int, object_type: str = 'product', export: bool = True) -> dict:
         """Get a metafield by its ID.
         Args:
-            identifier (str): The ID of the metafield to retrieve.
+            identifier (str|int): The ID of the metafield to retrieve.
             object_type (str): Type of object to get metafield for. Default is 'product'.
             export (bool): If True, export the metafield to a JSON file.
         Returns:
@@ -59,13 +59,16 @@ class ShoperMetafields:
             'page': 1,
         }
 
+        print("ℹ️  Downloading all metafields...")
         data = self.client._handle_request('GET', f'{self.url}/{object_type}', 
                                            params=params).json()
         
         number_of_pages = data.get('pages', 1)
         metafields.extend(data.get('list', []))
 
-        for page in tqdm(range(2, number_of_pages + 1), desc='Downloading pages', unit=' page'):
+        for page in tqdm(range(2, number_of_pages + 1), 
+                        desc='Downloading pages', unit=' page'):
+            
             params['page'] = page
             data = self.client._handle_request('GET', f'{self.url}/{object_type}',
                                                params=params).json()

@@ -2,6 +2,7 @@ from .products import ShoperProducts
 import config
 from datetime import datetime
 from tqdm import tqdm
+from utils.helpers.helper_functions import export_to_json
 
 
 class ShoperSpecialOffers:
@@ -14,7 +15,7 @@ class ShoperSpecialOffers:
         self.url = f'{self.client.site_url}/webapi/rest/specialoffers'
         self.TODAY = datetime.today().strftime('%Y-%m-%d')
 
-    def create_special_offer(self, discount_data):
+    def create_special_offer(self, discount_data: dict) -> int:
         """Create a special offer for in Shoper.
         Args:
             discount_data (dict): Data about the discount:
@@ -24,7 +25,7 @@ class ShoperSpecialOffers:
                 date_to: dd-mm-YYYY
 
         Returns:
-            int|dict: Special offer ID if successful, Error dict if failed
+            int: Special offer ID if successful.
         """
         params = {
             'product_id': discount_data['product_id'],
@@ -39,46 +40,35 @@ class ShoperSpecialOffers:
             self.url,
             json=params
         )
-
-        if response.status_code != 200:
-            error_description = response.json().get('error_description', 'Unknown error')
-            return {'success': False, 'error': error_description}
         
         return response.json()
 
-    def remove_special_offer_from_product(self, identifier, use_code=False):
+    def remove_special_offer_from_product(self, identifier: str | int, use_code: bool = False) -> bool:
         """Remove a special offer from Shoper.
         Args:
-            identifier (int|str): Product ID or code (SKU)
-            use_code (bool): Use product code (SKU) instead of product ID
+            identifier (str): Product ID or code (SKU).
+            use_code (bool): Use product code (SKU) instead of product ID.
         Returns:
-            True|dict: True if successful, Error dict if failed
+            True: True if successful.
+        Raises:
+            ValueError: If no special offer is found for the product.
         """
-        if use_code:
-            product = self.products.get_product_by_code(identifier, use_code=True)
-            promo_id = product.get('special_offer', {}).get('promo_id')
-        else:
-            product = self.products.get_product_by_code(identifier)
-            promo_id = product.get('special_offer', {}).get('promo_id')
+        product = self.products.get_product_by_code(identifier, use_code=use_code)
+        promo_id = product.get('special_offer', {}).get('promo_id')
 
-        if promo_id:
-            response = self.client._handle_request(
-                'DELETE',
-                f'{self.url}/{promo_id}'
-            )
-
-            if response.status_code != 200:
-                error_description = response.json()['error_description']
-                return {'success': False, 'error': error_description}
+        if not promo_id:
+            raise ValueError(f"No special offer found for product: {identifier}")
         
-            return True
+        self.client._handle_request('DELETE', f'{self.url}/{promo_id}')
+        return True
 
-        else:
-            return {'success': False, 'error': 'No special offer found for this product.'}
-
-    def get_all_special_offers(self):
+    def get_all_special_offers(self, export: bool = True) -> list:
         """Get all special offers from Shoper.
-        Returns a Data list if successful, Error dict if failed"""
+        Args:
+            export (bool): If True, export the special offers to a JSON file.
+        Returns:
+            list: List of special offers if successful.
+        """
         special_offers = []
         params = {
             'limit': config.SHOPER_LIMIT,
@@ -86,34 +76,18 @@ class ShoperSpecialOffers:
         }
 
         print("ℹ️  Downloading all special offers...")
-        response = self.client._handle_request(
-            'GET',
-            self.url,
-            params=params
-        )
-
-        if response.status_code != 200:
-            error_description = response.json().get('error_description', 'Unknown error')
-            return {'success': False, 'error': error_description}
-
-        data = response.json()
-        number_of_pages = data['pages']
+        data = self.client._handle_request('GET', self.url, params=params).json()
+        number_of_pages = data.get('pages', 1)
         special_offers.extend(data.get('list', []))
 
         for page in tqdm(range(2, number_of_pages + 1),
                         desc="Downloading pages", unit=" page"):
             
             params['page'] = page
-            response = self.client._handle_request(
-                'GET',
-                self.url,
-                params=params
-            )
+            data = self.client._handle_request('GET', self.url, params=params).json()
+            special_offers.extend(data.get('list', []))
 
-            if response.status_code != 200:
-                error_description = response.json().get('error_description', 'Unknown error')
-                return {'success': False, 'error': error_description}
-
-            special_offers.extend(response.json().get('list', []))
+        if export:
+            export_to_json(special_offers, 'shoper_special_offers.json')
 
         return special_offers
