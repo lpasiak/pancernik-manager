@@ -12,10 +12,10 @@ class ShoperProducts:
         self.pictures = ShoperPictures(client)
         self.url = f'{self.client.site_url}/webapi/rest/products'
 
-    def get_product_by_code(self, identifier, pictures=False, use_code=False):
+    def get_product_by_code(self, identifier: str, pictures: bool = False, use_code: bool = False) -> dict:
         """Get a product from Shoper by either product ID or product code.
         Args:
-            identifier (int|str): Product ID (int) or product code (str)
+            identifier (str): Product ID (int) or product code (str)
             use_code (bool): If True, use product code (SKU) instead of ID
         Returns:
             dict: Product data if successful, Error dict if failed
@@ -60,7 +60,7 @@ class ShoperProducts:
 
         return product
 
-    def create_product(self, product_data):
+    def create_product(self, product_data: dict) -> int | dict:
         """Create a new product in Shoper
         Args:
             product_data (dict): Product data
@@ -85,10 +85,10 @@ class ShoperProducts:
             return {'success': False,
                     'error': 'Response is not an integer, check the API response.'}
 
-    def remove_product(self, product_id):
+    def remove_product(self, product_id: str) -> bool | dict:
         """Remove a product from Shoper
         Args:
-            product_id (int): Product id
+            product_id (str): Product id
         Returns:
             True|dict: True if successful, Error dict if failed
         """
@@ -103,10 +103,10 @@ class ShoperProducts:
         
         return True
 
-    def update_product_by_code(self, identifier, use_code=False, **parameters):
+    def update_product_by_code(self, identifier: str, use_code: bool = False, **parameters) -> bool | dict:
         """Update a product from Shoper. Returns True if successful, None if failed
         Args:
-            identifier (int|str): Product id or product code
+            identifier (str): Product id or product code
             use_code (bool): If True, use product code (SKU) instead of ID
             parameters key=value: Parameters to update
         Returns:
@@ -136,7 +136,7 @@ class ShoperProducts:
         
         return True
 
-    def get_all_products(self):
+    def get_all_products(self) -> list | dict:
         """Get all products from Shoper.
         Returns a Data list if successful, Error dict if failed"""
         products = []
@@ -151,7 +151,7 @@ class ShoperProducts:
             self.url,
             params=params
         )
-
+        print(response)
         if response.status_code != 200:
             error_description = response.json().get('error_description', 'Unknown error')
             return {'success': False, 'error': error_description}
