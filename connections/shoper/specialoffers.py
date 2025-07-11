@@ -43,25 +43,6 @@ class ShoperSpecialOffers:
         
         return response.json()
 
-    def remove_special_offer_from_product(self, identifier: str | int, use_code: bool = False) -> bool:
-        """Remove a special offer from Shoper.
-        Args:
-            identifier (str): Product ID or code (SKU).
-            use_code (bool): Use product code (SKU) instead of product ID.
-        Returns:
-            True: True if successful.
-        Raises:
-            ValueError: If no special offer is found for the product.
-        """
-        product = self.products.get_product_by_code(identifier, use_code=use_code)
-        promo_id = product.get('special_offer', {}).get('promo_id')
-
-        if not promo_id:
-            raise ValueError(f"No special offer found for product: {identifier}")
-        
-        self.client._handle_request('DELETE', f'{self.url}/{promo_id}')
-        return True
-
     def get_all_special_offers(self, export: bool = True) -> list:
         """Get all special offers from Shoper.
         Args:
@@ -91,3 +72,22 @@ class ShoperSpecialOffers:
             export_to_json(special_offers, 'shoper_special_offers.json')
 
         return special_offers
+    
+    def remove_special_offer_from_product(self, identifier: str | int, use_code: bool = False) -> bool:
+        """Remove a special offer from Shoper.
+        Args:
+            identifier (str): Product ID or code (SKU).
+            use_code (bool): Use product code (SKU) instead of product ID.
+        Returns:
+            True: True if successful.
+        Raises:
+            ValueError: If no special offer is found for the product.
+        """
+        product = self.products.get_product_by_code(identifier, use_code=use_code)
+        promo_id = product.get('special_offer', {}).get('promo_id')
+
+        if not promo_id:
+            raise ValueError(f"No special offer found for product: {identifier}")
+        
+        self.client._handle_request('DELETE', f'{self.url}/{promo_id}')
+        return True

@@ -78,5 +78,3 @@ class ShoperMetafields:
             export_to_json(data, f'shoper_metafields_{object_type}.json')
 
         return metafields
-    
-
